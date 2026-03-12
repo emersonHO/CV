@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!--
+      Portafolio profesional (archivo único)
+      - Estilos: Tailwind CSS vía CDN (config embebida)
+      - Iconos: Lucide Icons
+      - Tipografía: Plus Jakarta Sans
+      - Interactividad: acordeón "Más sobre mí"
+    -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emerson | Portafolio</title>
+
+    <link rel="icon" href="images/me.jpg" type="image/png">
+
+    <!-- Tipografía (Plus Jakarta Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind CSS (CDN) + configuración embebida -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      /**
+       * Config de Tailwind embebida (paleta "Sunset Professional").
+       * Nota: Tailwind CDN compila en el navegador; ideal para un portafolio estático.
+       */
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              base: "#FFF5EC", // Fondo principal anaranjado muy claro
+              ink: "#2F3437",  // Texto principal (gris oscuro suave)
+              sunset: "#FF9A3C", // Acento 1 (naranja atardecer)
+              terracotta: "#D26A34", // Acento 2 (naranja-marrón cálido)
+            },
+            fontFamily: {
+              sans: ["Plus Jakarta Sans", "ui-sans-serif", "system-ui", "sans-serif"],
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(17, 24, 39, 0.10)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Pequeños ajustes globales (mínimos, sin CSS externo) -->
+    <style>
+      /* Scroll suave para navegación interna */
+      html { scroll-behavior: smooth; }
+
+      /* Mejora la selección de texto con acento sutil */
+      ::selection { background: rgba(255, 154, 60, 0.32); }
+
+      /* Fondo sutil en todo el sitio (degradado cálido) */
+      body {
+        background: radial-gradient(circle at top, #FFE4BF 0, #FFF5EC 35%, #FFFDF9 75%);
+      }
+
+      /* Animaciones suaves de aparición al hacer scroll */
+      .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 520ms ease, transform 520ms ease;
+      }
+      .reveal--visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+</head>
+<body class="min-h-screen bg-base/80 text-ink font-sans antialiased">
+  <!--
+    NAVBAR
+    - Logo placeholder + marca "EMERSON" (izquierda)
+    - Menú de navegación + botón Descargar CV (derecha)
+    - Mobile first: menú colapsable
+  -->
+  <nav class="sticky top-0 z-50 border-b border-black/5 bg-base/80 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
+      <a href="#inicio" class="group inline-flex items-center gap-2">
+        <!-- Placeholder del "logo" (ícono código) -->
+        <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-terracotta text-white shadow-soft ring-1 ring-black/5">
+          <span class="text-xl font-bold" style="font-family: 'Times New Roman', serif;">
+            E
+          </span>
+        </span>
+        <span class="text-sm font-extrabold tracking-wide text-ink">
+          EMERSON
+          <span class="text-terracotta">.DEV 三</span>
+        </span>
+      </a>
+
+      <!-- Botón menú (mobile) -->
+      <button
+        id="navToggle"
+        class="inline-flex items-center justify-center rounded-2xl border border-black/10 bg-white px-3 py-2 text-sm font-semibold shadow-md sm:hidden"
+        type="button"
+        aria-controls="navMenu"
+        aria-expanded="false"
+      >
+        <span class="sr-only">Abrir menú</span>
+        <i data-lucide="menu" class="h-5 w-5"></i>
+      </button>
+
+      <!-- Menú (desktop) -->
+      <div class="hidden items-center gap-2 sm:flex">
+        <div class="flex items-center gap-1 rounded-2xl border border-black/5 bg-white/70 p-1 shadow-md">
+          <a class="rounded-xl px-3 py-2 text-sm font-semibold text-ink/80 hover:bg-base hover:text-ink" href="#formacion">Formación</a>
+          <a class="rounded-xl px-3 py-2 text-sm font-semibold text-ink/80 hover:bg-base hover:text-ink" href="#experiencia">Experiencia</a>
+          <a class="rounded-xl px-3 py-2 text-sm font-semibold text-ink/80 hover:bg-base hover:text-ink" href="#proyectos">Proyectos</a>
+          <a class="rounded-xl px-3 py-2 text-sm font-semibold text-ink/80 hover:bg-base hover:text-ink" href="#voluntariados">Voluntariados</a>
+          <a class="rounded-xl px-3 py-2 text-sm font-semibold text-ink/80 hover:bg-base hover:text-ink" href="#conocimientos">Skills</a>
+          <a class="rounded-xl px-3 py-2 text-sm font-semibold text-ink/80 hover:bg-base hover:text-ink" href="#mas-sobre-mi">Más</a>
+        </div>
+
+        <!-- Descarga de CV (atributo download correctamente configurado) -->
+        <a
+          href="documents/CV Huaman Ortiz Emerson Raul.pdf"
+          target="_blank"
+          download="CV Huaman Ortiz Emerson Raul.pdf"
+          class="inline-flex items-center gap-2 rounded-2xl bg-terracotta px-4 py-2 text-sm font-bold text-white shadow-soft ring-1 ring-black/10 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-sunset"
+        >
+          <i data-lucide="download" class="h-4 w-4"></i>
+          CV Resumido
+        </a>
+        <a
+          href="documents/CV Huaman Ortiz Emerson Raul.pdf"
+          target="_blank"
+          download="CV Huaman Ortiz Emerson Raul.pdf"
+          class="inline-flex items-center gap-2 rounded-2xl bg-terracotta px-4 py-2 text-sm font-bold text-white shadow-soft ring-1 ring-black/10 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-sunset"
+        >
+          <i data-lucide="download" class="h-4 w-4"></i>
+          CV Expandido
+        </a>
+      </div>
+    </div>
+
+    <!-- Menú (mobile) -->
+    <div id="navMenu" class="hidden border-t border-black/5 bg-base sm:hidden">
+      <div class="mx-auto max-w-6xl px-4 py-3">
+        <div class="grid gap-2">
+          <a class="rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm font-semibold" href="#formacion">Formación</a>
+          <a class="rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm font-semibold" href="#experiencia">Experiencia</a>
+          <a class="rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm font-semibold" href="#proyectos">Proyectos</a>
+          <a class="rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm font-semibold" href="#voluntariados">Voluntariados</a>
+          <a class="rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm font-semibold" href="#conocimientos">Conocimientos Técnicos</a>
+          <a class="rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm font-semibold" href="#mas-sobre-mi">Más sobre mí</a>
+          <a
+            href="CV Huaman Ortiz Emerson Raul.pdf"
+            download="CV Huaman Ortiz Emerson Raul.pdf"
+            class="inline-flex items-center justify-center gap-2 rounded-2xl bg-terracotta px-4 py-3 text-sm font-extrabold text-white shadow-soft ring-1 ring-black/10"
+          >
+            <i data-lucide="download" class="h-4 w-4"></i>
+            CV Resumido
+          </a>
+          <a
+            href="CV Huaman Ortiz Emerson Raul.pdf"
+            download="CV Huaman Ortiz Emerson Raul.pdf"
+            class="inline-flex items-center justify-center gap-2 rounded-2xl bg-terracotta px-4 py-3 text-sm font-extrabold text-white shadow-soft ring-1 ring-black/10"
+          >
+            <i data-lucide="download" class="h-4 w-4"></i>
+            CV Expandido
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!--
+    HERO SECTION
+    - Imagen fondo tech/atardecer + overlay suave
+    - Foto perfil estilo LinkedIn
+    - Nombre, descripción y redes con iconos
+  -->
+  <header id="inicio" class="relative isolate">
+    <!-- Fondo hero (atardecer tech) -->
+    <div
+      class="absolute inset-0 -z-10 bg-cover bg-center"
+      style="background-image:url('images/fondo.avif');"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Overlay (suave, legibilidad) -->
+    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-black/40 via-black/45 to-base/95" aria-hidden="true"></div>
+
+    <div class="mx-auto max-w-6xl px-4 pb-10 pt-14 sm:px-6 sm:pb-16 sm:pt-18">
+      <div class="grid items-end gap-8 md:grid-cols-[1fr_auto]">
+        <div class="text-white">
+          <p class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold tracking-wide ring-1 ring-white/15">
+            <span class="h-2 w-2 rounded-full bg-sunset"></span>
+            Ingeniería de Software · UNMSM · 9° ciclo
+          </p>
+
+          <h1 class="mt-4 text-[2.15rem] font-extrabold leading-tight tracking-tight sm:text-5xl">
+            Emerson Raul Huaman Ortiz
+            <span class="text-sunset">.</span>
+          </h1>
+
+          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-white/90 sm:text-[0.9rem]">
+            Ing. de Software en formación con experiencia en desarrollo, análisis de datos y automatización. Analista Funcional Jr. enfocado en aprendizaje continuo y uso de IA para optimizar procesos
+          </p>
+
+          <div class="mt-6 flex flex-wrap items-center gap-2">
+            <a
+              class="inline-flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-2 text-sm font-semibold ring-1 ring-white/15 hover:bg-white/15"
+              href="https://www.linkedin.com/in/emerson-raul-huaman-ortiz/"
+              target="_blank"
+              aria-label="LinkedIn de Emerson"
+            >
+              <i data-lucide="linkedin" class="h-4 w-4"></i>
+              LinkedIn
+            </a>
+            <a
+              class="inline-flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-2 text-sm font-semibold ring-1 ring-white/15 hover:bg-white/15"
+              href="https://github.com/emersonHO"
+              target="_blank"
+              aria-label="GitHub de Emerson"
+            >
+              <i data-lucide="github" class="h-4 w-4"></i>
+              GitHub
+            </a>
+            <a
+              class="inline-flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-2 text-sm font-semibold ring-1 ring-white/15 hover:bg-white/15"
+              href="https://wa.me/51915919608"
+              target="_blank"
+              aria-label="WhatsApp de Emerson"
+            >
+              <i data-lucide="phone" class="h-4 w-4"></i>
+              WhatsApp
+            </a>
+
+            <a
+              class="inline-flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-2 text-sm font-semibold ring-1 ring-white/15 hover:bg-white/15"
+              href="mailto:emerson.huaman1@unmsm.edu.pe"
+              aria-label="Correo de Emerson"
+            >
+              <i data-lucide="mail" class="h-4 w-4"></i>
+              Email
+            </a>
+
+            <a
+              class="inline-flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-2 text-sm font-semibold ring-1 ring-white/15 hover:bg-white/15 cursor-pointer"
+              onclick="compartirPagina()"
+              aria-label="Compartir página"
+            >
+              <i data-lucide="share-2" class="h-4 w-4"></i>
+              Compartir
+            </a>
+
+            <script>
+            function compartirPagina() {
+              if (navigator.share) {
+                navigator.share({
+                  title: "Portafolio de Emerson",
+                  text: "Mira este portafolio",
+                  url: window.location.href
+                });
+              } else {
+                alert("Tu navegador no soporta compartir directamente.");
+              }
+            }
+            </script>
+          </div>
+        </div>
+
+        <!-- Foto de perfil (placeholder). Reemplaza `src` con tu foto real -->
+        <div class="flex justify-start md:justify-end">
+          <div class="relative">
+            <div class="rounded-3xl border border-white/20 bg-white/10 p-[3px] shadow-soft backdrop-blur">
+              <!-- Reemplaza `foto.png` por tu foto estilo LinkedIn -->
+              <img
+                class="h-28 w-28 rounded-[1.4rem] object-cover sm:h-32 sm:w-32"
+                src="images/foto.png"
+                alt="Foto de perfil de Emerson"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENIDO -->
+  <main class="mx-auto max-w-6xl px-4 pb-16 pt-6 sm:px-6">
+    <!-- Grid principal (mobile first) -->
+    <div class="grid gap-6 lg:grid-cols-12 lg:gap-8">
+      <!-- Columna lateral (resumen) -->
+      <aside class="reveal lg:col-span-4">
+        <!-- Sobre mí (resumen rápido) -->
+        <section class="rounded-2xl border border-black/5 bg-white/95 p-6 shadow-md">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-sunset/20 text-terracotta ring-1 ring-black/5">
+              <i data-lucide="user-round" class="h-5 w-5"></i>
+            </span>
+            <h2 class="text-lg font-extrabold tracking-tight">Perfil</h2>
+          </div>
+          <p class="mt-3 text-[0.87rem] leading-relaxed text-ink/80">
+             Estudiante de 9° ciclo en Ing. de Software con formación en desarrollo de aplicaciones, análisis de datos, automatización y metodologías ágiles. Me caracterizo por ser proactivo, con mentalidad positiva y enfoque en el aprendizaje continuo y la exploración de nuevas tecnologías. Con experiencia como Analista Funcional Junior en la obtención de requisitos, documentación funcional y alineación entre negocio y tecnología, participando en proyectos a lo largo del ciclo de vida del desarrollo de software (SDLC). Haciendo uso de herramientas de IA para optimizar el análisis de procesos y aprendizaje
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="rounded-full bg-base px-3 py-1 text-xs font-semibold text-ink/75 ring-1 ring-black/5">Desarrollo de Software</span>
+            <span class="rounded-full bg-base px-3 py-1 text-xs font-semibold text-ink/75 ring-1 ring-black/5">Análisis de Datos</span>
+            <span class="rounded-full bg-base px-3 py-1 text-xs font-semibold text-ink/75 ring-1 ring-black/5">Automatización</span>
+            <span class="rounded-full bg-base px-3 py-1 text-xs font-semibold text-ink/75 ring-1 ring-black/5">Análisis Funcional</span>
+            <span class="rounded-full bg-base px-3 py-1 text-xs font-semibold text-ink/75 ring-1 ring-black/5">Metodologías Ágiles</span>
+            <span class="rounded-full bg-base px-3 py-1 text-xs font-semibold text-ink/75 ring-1 ring-black/5">IA aplicada</span>
+          </div>
+        </section>
+
+        <!-- Soft Skills -->
+        <section class="mt-6 rounded-2xl border border-black/5 bg-white/95 p-6 shadow-md">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-terracotta/10 text-terracotta ring-1 ring-black/5">
+              <i data-lucide="sparkles" class="h-5 w-5"></i>
+            </span>
+            <h2 class="text-lg font-extrabold tracking-tight">Habilidades Blandas</h2>
+          </div>
+          <div class="mt-4 flex flex-wrap gap-2 text-[0.85rem]">
+            <span class="rounded-2xl border border-black/10 bg-base px-3 py-2 font-semibold">Proactividad</span>
+            <span class="rounded-2xl border border-black/10 bg-base px-3 py-2 font-semibold">Mentalidad positiva</span>
+            <span class="rounded-2xl border border-black/10 bg-base px-3 py-2 font-semibold">Comunicación</span>
+            <span class="rounded-2xl border border-black/10 bg-base px-3 py-2 font-semibold">Trabajo en equipo</span>
+            <span class="rounded-2xl border border-black/10 bg-base px-3 py-2 font-semibold">Resolución de problemas</span>
+            <span class="rounded-2xl border border-black/10 bg-base px-3 py-2 font-semibold">Adaptabilidad</span>
+            <span class="rounded-2xl border border-black/10 bg-base px-3 py-2 font-semibold">Toma de decisiones</span>
+            <span class="rounded-2xl border border-black/10 bg-base px-3 py-2 font-semibold">Autodidacta</span>
+            <span class="rounded-2xl border border-black/10 bg-base px-3 py-2 font-semibold">Empatía</span>
+          </div>
+        </section>
+
+        <!-- Idiomas -->
+        <section class="mt-6 rounded-2xl border border-black/5 bg-white/95 p-6 shadow-md">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-sunset/20 text-terracotta ring-1 ring-black/5">
+              <i data-lucide="languages" class="h-5 w-5"></i>
+            </span>
+            <h2 class="text-lg font-extrabold tracking-tight">Idiomas</h2>
+          </div>
+
+          <div class="mt-4">
+            <ul class="space-y-3 text-sm text-ink/80">
+              <!-- Español -->
+              <li class="flex items-center gap-2">
+                <img src="images/es.png" alt="Español" class="h-4 w-5 rounded border border-gray-300 object-cover" />
+                <div>
+                  <p class="font-semibold text-ink">Español</p>
+                  <p class="text-xs text-ink/60">Nativo</p>
+                </div>
+              </li>
+
+              <!-- Inglés -->
+              <li class="flex items-center gap-2">
+                <img src="images/gb.png" alt="Inglés" class="h-4 w-5 rounded border border-gray-300 object-cover" />
+                <div>
+                  <p class="font-semibold text-ink">Inglés</p>
+                  <p class="text-xs text-ink/60">Intermedio</p>
+                </div>
+              </li>
+
+              <!-- Japonés -->
+              <li class="flex items-center gap-2">
+                <img src="images/jp.svg" alt="Japonés" class="h-4 w-5 rounded border border-gray-300 object-cover" />
+                <div>
+                  <p class="font-semibold text-ink">Japonés</p>
+                  <p class="text-xs text-ink/60">Básico</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </aside>
+
+      <!-- Columna principal (tarjetas de contenido) -->
+      <section class="lg:col-span-8 space-y-6">
+        <!-- Formación (línea de tiempo académica) -->
+        <section id="formacion" class="reveal rounded-2xl border border-black/5 bg-white/95 p-6 shadow-md">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-sunset/20 text-terracotta ring-1 ring-black/5">
+                <i data-lucide="graduation-cap" class="h-5 w-5"></i>
+              </span>
+              <h2 class="text-lg font-extrabold tracking-tight">Formación</h2>
+            </div>
+            <span class="rounded-full bg-base px-3 py-1 text-xs font-bold text-ink/70 ring-1 ring-black/5">9no ciclo</span>
+          </div>
+
+          <!-- Timeline vertical académica -->
+          <div class="mt-5 space-y-4 border-l border-dashed border-sunset/60 pl-4">
+            <article class="relative pl-4">
+              <span class="absolute -left-[9px] top-1 h-3 w-3 rounded-full bg-sunset ring-4 ring-base"></span>
+              <p class="text-[0.8rem] font-semibold text-ink/70">OCT 2021 – Actualidad</p>
+              <p class="mt-1 text-sm font-extrabold">Universidad Nacional Mayor de San Marcos</p>
+              <p class="mt-1 text-[0.87rem] text-ink/75">Ingeniería de Software · 9° ciclo</p>
+            </article>
+            <article class="relative pl-4">
+              <span class="absolute -left-[9px] top-1 h-3 w-3 rounded-full bg-sunset ring-4 ring-base"></span>
+              <p class="text-[0.8rem] font-semibold text-ink/70">NOV 2021 – DIC 2021</p>
+              <p class="mt-1 text-sm font-extrabold">Centro de Informática UNMSM</p>
+              <p class="mt-1 text-[0.87rem] text-ink/75">Herramientas informáticas y productividad</p>
+            </article>
+            <article class="relative pl-4">
+              <span class="absolute -left-[9px] top-1 h-3 w-3 rounded-full bg-sunset ring-4 ring-base"></span>
+              <p class="text-[0.8rem] font-semibold text-ink/70">ENE 2023 – Actualidad</p>
+              <p class="mt-1 text-sm font-extrabold">UNMSM – FLCH: Centro de Idiomas</p>
+              <p class="mt-1 text-[0.87rem] text-ink/75">Inglés (nivel intermedio)</p>
+            </article>
+            <article class="relative pl-4">
+              <span class="absolute -left-[9px] top-1 h-3 w-3 rounded-full bg-sunset ring-4 ring-base"></span>
+              <p class="text-[0.8rem] font-semibold text-ink/70">MAR 2025 – JUL 2025</p>
+              <p class="mt-1 text-sm font-extrabold">Red Peruana de Capacitación</p>
+              <p class="mt-1 text-[0.87rem] text-ink/75">Power BI, SQL Server y Python orientados a analítica</p>
+            </article>
+            <article class="relative pl-4">
+              <span class="absolute -left-[9px] top-1 h-3 w-3 rounded-full bg-sunset ring-4 ring-base"></span>
+              <p class="text-[0.8rem] font-semibold text-ink/70">MAR 2025 – DIC 2025</p>
+              <p class="mt-1 text-sm font-extrabold">Hamada Channel</p>
+              <p class="mt-1 text-[0.87rem] text-ink/75">Japonés (nivel básico)</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- Experiencia (línea de tiempo profesional) -->
+        <section id="experiencia" class="reveal rounded-2xl border border-black/5 bg-white/95 p-6 shadow-md">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-terracotta/10 text-terracotta ring-1 ring-black/5">
+              <i data-lucide="briefcase" class="h-5 w-5"></i>
+            </span>
+            <h2 class="text-lg font-extrabold tracking-tight">Experiencia</h2>
+          </div>
+
+          <!-- Timeline profesional -->
+          <div class="mt-5 space-y-5 border-l border-dashed border-terracotta/60 pl-4">
+            <article class="relative pl-4">
+              <span class="absolute -left-[9px] top-1 h-3 w-3 rounded-full bg-terracotta ring-4 ring-base"></span>
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h3 class="text-sm font-extrabold">Consultoría IT · Independiente</h3>
+                <span class="rounded-full bg-base px-2.5 py-1 text-[0.7rem] font-semibold text-ink/70 ring-1 ring-black/5">2023 – 2025</span>
+              </div>
+              <p class="mt-2 text-[0.87rem] font-semibold text-ink/80">
+                Analista Funcional Jr. / Ingeniero de Requisitos
+              </p>
+              <ul class="mt-2 list-disc space-y-1 pl-5 text-[0.85rem] text-ink/75">
+                <li>Recopilé y analicé los requisitos funcionales y no funcionales de las partes interesadas.</li>
+                <li>Elaboré documentación funcional clara para apoyar a los equipos de desarrollo.</li>
+                <li>Asistí en la definición del alcance, la validación de funcionalidades y el control de cambios.</li>
+                <li>Colaboré con perfiles técnicos y no técnicos para garantizar la alineación con el negocio.</li>
+                <li>Utilicé herramientas de IA para respaldar el análisis de requisitos, la calidad de la documentación y la optimización de tareas.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <!-- Certificados -->
+        <section id="certificados" class="reveal rounded-2xl border border-black/5 bg-white/95 p-6 shadow-md">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-sunset/20 text-terracotta ring-1 ring-black/5">
+              <i data-lucide="award" class="h-5 w-5"></i>
+            </span>
+            <h2 class="text-lg font-extrabold tracking-tight">Certificados</h2>
+          </div>
+
+          <div class="mt-5 space-y-4 border-l border-dashed border-sunset/60 pl-4">
+
+            <a href="certificates/CERSEU.pdf" target="_blank" class="block hover:bg-sunset/5 rounded-lg p-2 transition">
+              <article class="relative pl-4">
+                <span class="absolute -left-[9px] top-1 h-3 w-3 rounded-full bg-sunset ring-4 ring-base"></span>
+                <p class="text-[0.8rem] font-semibold text-ink/70">Nov 2023</p>
+                <p class="mt-1 text-sm font-extrabold">Ingeniería y educación en pedagogía de TIC's</p>
+                <p class="mt-1 text-[0.87rem] text-ink/75">UNMSM CERSEU</p>
+              </article>
+            </a>
+
+            <a href="certificates/RPC.pdf" target="_blank" class="block hover:bg-sunset/5 rounded-lg p-2 transition">
+              <article class="relative pl-4">
+                <span class="absolute -left-[9px] top-1 h-3 w-3 rounded-full bg-sunset ring-4 ring-base"></span>
+                <p class="text-[0.8rem] font-semibold text-ink/70">May 2025</p>
+                <p class="mt-1 text-sm font-extrabold">Power BI, SQL Server y Python para analítica</p>
+                <p class="mt-1 text-[0.87rem] text-ink/75">Red Peruana de Capacitación</p>
+              </article>
+            </a>
+
+            <a href="certificates/LASAI.pdf" target="_blank" class="block hover:bg-sunset/5 rounded-lg p-2 transition">
+              <article class="relative pl-4">
+                <span class="absolute -left-[9px] top-1 h-3 w-3 rounded-full bg-sunset ring-4 ring-base"></span>
+                <p class="text-[0.8rem] font-semibold text-ink/70">Nov 2025</p>
+                <p class="mt-1 text-sm font-extrabold">Curso Int.: Escuela Latinoamericana de IA</p>
+                <p class="mt-1 text-[0.87rem] text-ink/75">UNMSM FISI</p>
+              </article>
+            </a>
+
+          </div>
+        </section>
+
+        <!-- Proyectos (cards con soporte para pequeñas imágenes) -->
+        <section id="proyectos" class="reveal rounded-2xl border border-black/5 bg-white/95 p-6 shadow-md">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-sunset/20 text-terracotta ring-1 ring-black/5">
+              <i data-lucide="layers" class="h-5 w-5"></i>
+            </span>
+            <h2 class="text-lg font-extrabold tracking-tight">Proyectos</h2>
+          </div>
+
+          <div class="mt-5 grid gap-4 lg:grid-cols-2">
+            <article class="group rounded-2xl border border-black/10 bg-base/90 p-5 transition hover:-translate-y-1 hover:shadow-soft lg:col-span-2">
+              <div class="flex items-start gap-3">
+                <!-- Thumbnail: reemplaza por una pequeña imagen si lo deseas -->
+                <div class="mt-1 h-10 w-10 overflow-hidden rounded-xl bg-white ring-1 ring-black/5">
+                  <div class="flex h-full w-full items-center justify-center text-terracotta">
+                    <i data-lucide="book-open-check" class="h-5 w-5"></i>
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-sm font-extrabold">PrimeTech Learning</h3>
+                  <p class="mt-1 text-[0.87rem] text-ink/75">
+                    Colaboré en la diseño y planificación de PrimeTech Learning, una propuesta orientada al desarrollo y distribución de aplicaciones educativas web para estudiantes de primaria en Lima. Participé en la definición del modelo de negocio, análisis del mercado y diseño de una estrategia de contenido personalizado alineado al currículo escolar peruano. Este proyecto fortaleció mis habilidades en gestión de proyectos, planificación estratégica y trabajo en equipo con enfoque en innovación educativa.
+                  </p>
+                </div>
+              </div>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">EdTech</span>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">UX</span>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Investigación</span>
+              </div>
+            </article>
+
+            <article class="group rounded-2xl border border-black/10 bg-base/90 p-5 transition hover:-translate-y-1 hover:shadow-soft lg:col-span-2">
+              <div class="flex items-start gap-3">
+                <!-- Thumbnail: reemplaza por una pequeña imagen si lo deseas -->
+                <div class="mt-1 h-10 w-10 overflow-hidden rounded-xl bg-white ring-1 ring-black/5">
+                  <div class="flex h-full w-full items-center justify-center text-terracotta">
+                    <i data-lucide="battery-charging" class="h-5 w-5"></i>
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-sm font-extrabold">Sistema IoT para predicción de consumo energético</h3>
+                  <p class="mt-1 text-[0.87rem] text-ink/75">
+                    Desarrollé un Sistema de monitoreo y predicción de consumo energético en alumbrado urbano, el cual esta basado en Arduino y Python para simular, analizar y predecir el consumo energético en luminarias urbanas. Implementé modelos de machine learning y un dashboard interactivo con Streamlit para visualizar datos en tiempo real, identificar anomalías y optimizar el consumo. El proyecto fortaleció mis habilidades en IoT, análisis de datos y visualización aplicada a la sostenibilidad.
+                  </p>
+                </div>
+              </div>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">IoT</span>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Python</span>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Machine Learning</span>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Streamlit</span>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Sostenibilidad</span>
+              </div>
+            </article>
+
+            <article class="group rounded-2xl border border-black/10 bg-base/90 p-5 transition hover:-translate-y-1 hover:shadow-soft lg:col-span-2">
+              <div class="flex items-start gap-3">
+                <!-- Thumbnail: reemplaza por una pequeña imagen si lo deseas -->
+                <div class="mt-1 h-10 w-10 overflow-hidden rounded-xl bg-white ring-1 ring-black/5">
+                  <div class="flex h-full w-full items-center justify-center text-terracotta">
+                    <i data-lucide="line-chart" class="h-5 w-5"></i>
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-sm font-extrabold">Modelo predictivo de riesgo crediticio</h3>
+                  <p class="mt-1 text-[0.87rem] text-ink/75">
+                    En el marco de un proyecto de investigación, participé en el desarrollo de un sistema predictivo que estime la probabilidad de incumplimiento en préstamos personales, aplicando técnicas de minería de datos e IA. El trabajo incluyó el análisis y preprocesamiento de datos históricos, la implementación y comparación de algoritmos de aprendizaje automático, y la evaluación de desempeño utilizando métricas como precisión, sensibilidad y especificidad. Proyecto el cual me permitió afianzar mis conocimientos en ML, análisis de datos y su aplicación práctica en contexto financieros.
+                  </p>
+                </div>
+              </div>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Machine Learning</span>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Data Science</span>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">FinTech</span>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Python</span>
+              </div>
+            </article>
+
+            <article class="group rounded-2xl border border-black/10 bg-base/90 p-5 transition hover:-translate-y-1 hover:shadow-soft lg:col-span-2">
+              <div class="flex items-start gap-3">
+                
+                <!-- Icon / Thumbnail -->
+                <div class="mt-1 h-10 w-10 overflow-hidden rounded-xl bg-white ring-1 ring-black/5">
+                  <div class="flex h-full w-full items-center justify-center text-terracotta">
+                    <i data-lucide="sparkles" class="h-5 w-5"></i>
+                  </div>
+                </div>
+
+                <div class="flex-1">
+                  <h3 class="text-sm font-extrabold">Otros proyectos</h3>
+
+                  <p class="mt-1 text-[0.87rem] text-ink/75">
+                    Participación en diversos proyectos orientados al fortalecimiento de competencias
+                    técnicas y organizacionales. Entre los más representativos se encuentran:
+                  </p>
+
+                  <ul class="mt-2 space-y-1 text-[0.87rem] text-ink/75 list-disc pl-4">
+                    <li>
+                      Elaboración de planes de identificación, análisis, evaluación y tratamiento de riesgos
+                      para una empresa del sector farmacéutico.
+                    </li>
+                    <li>
+                      Desarrollo de un sistema de calificación automática de fichas de respuestas.
+                    </li>
+                    <li>
+                      Implementación de módulos funcionales para un sistema de apoyo a docentes.
+                    </li>
+                    <li>
+                      Maquetado de plataforma web para la venta de entradas en línea.
+                    </li>
+                    <li>
+                      Creación de dashboards en Power BI a partir de requerimientos definidos, incluyendo
+                      modelado de datos, diseño visual y enfoque en indicadores clave.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Power BI</span>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Análisis de datos</span>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Automatización</span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Voluntariados -->
+        <section id="voluntariados" class="reveal rounded-2xl border border-black/5 bg-white/95 p-6 shadow-md">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-terracotta/10 text-terracotta ring-1 ring-black/5">
+              <i data-lucide="hand-heart" class="h-5 w-5"></i>
+            </span>
+            <h2 class="text-lg font-extrabold tracking-tight">Voluntariados</h2>
+          </div>
+
+          <div class="mt-5 grid gap-4 sm:grid-cols-2">
+            <article class="group rounded-2xl border border-black/10 bg-base/90 p-5 transition hover:-translate-y-1 hover:shadow-soft lg:col-span-2">
+              <div class="flex items-start gap-3">
+                <!-- Thumbnail: reemplaza por una pequeña imagen si lo deseas -->
+                <div class="mt-1 h-10 w-10 overflow-hidden rounded-xl bg-white ring-1 ring-black/5">
+                  <div class="flex h-full w-full items-center justify-center text-terracotta">
+                    <i data-lucide="book-open-check" class="h-5 w-5"></i>
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-sm font-extrabold">Auditoría educativa a escolares</h3>
+                  <p class="mt-1 text-[0.87rem] text-ink/75">
+                    Participé en jornadas de auditoría de conocimientos matemáticos y uso de herramientas tecnológicas en estudiantes de secundaria, con el objetivo de detectar brechas de aprendizaje y brindar recomendaciones personalizadas. Esta experiencia fortaleció mis habilidades de comunicación, empatía y trabajo en equipo.
+                  </p>
+                </div>
+              </div>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Educación</span>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Comunicación</span>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Análisis</span>
+              </div>
+            </article>
+
+            <article class="group rounded-2xl border border-black/10 bg-base/90 p-5 transition hover:-translate-y-1 hover:shadow-soft lg:col-span-2">
+              <div class="flex items-start gap-3">
+                <!-- Thumbnail: reemplaza por una pequeña imagen si lo deseas -->
+                <div class="mt-1 h-10 w-10 overflow-hidden rounded-xl bg-white ring-1 ring-black/5">
+                  <div class="flex h-full w-full items-center justify-center text-terracotta">
+                    <i data-lucide="book-open-check" class="h-5 w-5"></i>
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-sm font-extrabold">Proyecto Interdisciplinario de TIC en colegios EBR</h3>
+                  <p class="mt-1 text-[0.87rem] text-ink/75">
+                    Integré un equipo multidisciplinario de estudiantes que brindó apoyo técnico y capacitación básica en TI y comunicación a docentes y alumnos de instituciones educativas públicas cercanas a la universidad. El proyecto implicó visitas presenciales, instalación y configuración de software, asesoramiento digital y acompañamiento pedagógico. Reforcé mi compromiso social, habilidades de colaboración, empatía y aplicación práctica del conocimiento técnico.
+                  </p>
+                </div>
+              </div>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Capacitación</span>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Soporte técnico</span>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink/70 ring-1 ring-black/5">Inclusión digital</span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Conocimientos técnicos y herramientas usadas -->
+        <section id="conocimientos" class="reveal rounded-2xl border border-black/5 bg-white/95 p-6 shadow-md">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-sunset/20 text-terracotta ring-1 ring-black/5">
+              <i data-lucide="cpu" class="h-5 w-5"></i>
+            </span>
+            <h2 class="text-lg font-extrabold tracking-tight">Conocimientos Técnicos y herramientas usadas</h2>
+          </div>
+
+          <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
+            <!-- Lenguajes -->
+            <div class="rounded-2xl border border-black/10 bg-base/90 p-5">
+              <div class="grid grid-cols-4 gap-3">
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/python_logo.png" alt="Python" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/java_logo.png" alt="Java" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/cpp_logo.png" alt="C++" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/javascript_logo.png" alt="JavaScript" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Bases de datos -->
+            <div class="rounded-2xl border border-black/10 bg-base/90 p-5">
+              <div class="grid grid-cols-4 gap-3">
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/mysql_logo.png" alt="MySQL" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/sqlserver_logo.png" alt="SQL Server" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/oracle_logo.png" alt="Oracle" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/postgresql_logo.png" alt="PostgreSQL" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Frameworks y bibliotecas -->
+            <div class="rounded-2xl border border-black/10 bg-base/90 p-5 sm:col-span-2">
+              <div class="grid grid-cols-7 gap-3">
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/react_logo.png" alt="React" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/streamlit_logo.svg" alt="Streamlit" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/opencv_logo.png" alt="OpenCV" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/scikitlearn_logo.png" alt="scikit-learn" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/pandas_logo.png" alt="pandas" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/matplotlib_logo.png" alt="matplotlib" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/seaborn_logo.svg" alt="seaborn" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Desarrollo web -->
+            <div class="rounded-2xl border border-black/10 bg-base/90 p-5">
+              <div class="grid grid-cols-4 gap-3">
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/html_logo.png" alt="HTML" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/css_logo.png" alt="CSS" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/rest_api_logo.png" alt="API REST" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/moqups_logo.png" alt="moqups" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Entornos y control de versiones -->
+            <div class="rounded-2xl border border-black/10 bg-base/90 p-5">
+              <div class="grid grid-cols-4 gap-3">
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/vscode_logo.png" alt="VSCode" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/git_logo.png" alt="Git" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/github_logo.svg" alt="GitHub" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/intellij_logo.png" alt="IntelliJ" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Visualización y análisis -->
+            <div class="rounded-2xl border border-black/10 bg-base/90 p-5">
+              <div class="grid grid-cols-4 gap-3">
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/powerbi_logo.png" alt="Power BI" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/excel_logo.png" alt="Excel" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/jupyter_logo.png" alt="Jupyter" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/colab_logo.png" alt="Google Colab" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+              </div>
+            </div>
+
+            <!-- IoT y automatización -->
+            <div class="rounded-2xl border border-black/10 bg-base/90 p-5">
+              <div class="grid grid-cols-4 gap-3">
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/powerplatform_logo.png" alt="Power Platform" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/arduino_logo.png" alt="Arduino" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/coppeliasim_logo.png" alt="CoppeliaSim" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/n8n_logo.png" alt="n8n" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Gestión y metodologías -->
+            <div class="rounded-2xl border border-black/10 bg-base/90 p-5">
+              <div class="grid grid-cols-4 gap-3">
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/scrum_logo.png" alt="Scrum" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/jira_logo.png" alt="Jira" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/trello_logo.png" alt="Trello" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/pirani_logo.avif" alt="Pirani" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Diseño y prototipado -->
+            <div class="rounded-2xl border border-black/10 bg-base/90 p-5">
+              <div class="grid grid-cols-4 gap-3">
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/figma_logo.svg" alt="Figma" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/framer_logo.png" alt="Framer" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/canva_logo.png" alt="Canva" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/autocad_logo.png" alt="AutoCAD" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+              </div>
+            </div>
+
+            <!-- SO y virtualización -->
+            <div class="rounded-2xl border border-black/10 bg-base/90 p-5">
+              <div class="grid grid-cols-4 gap-3">
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/virtualbox_logo.png" alt="VirtualBox" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/ubuntu_logo.png" alt="Ubuntu" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/kali_logo.png" alt="Kali Linux" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/oraclelinux_logo.jpg" alt="Oracle Linux" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Ofimática y plataformas -->
+            <div class="rounded-2xl border border-black/10 bg-base/90 p-5">
+              <div class="grid grid-cols-4 gap-3">
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/office_logo.png" alt="Microsoft Office" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/google_workspace_logo.webp" alt="Google Workspace" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/lucidchart_logo.png" alt="Lucidchart" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+                <div class="flex h-14 w-14 items-center justify-center rounded-xl border border-black/10 bg-white/80 transition-transform duration-300 hover:scale-110">
+                  <img src="images/cursor_logo.png" alt="cursor" class="h-10 w-10 object-contain transition-transform duration-300" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Más sobre mí (acordeón interactivo) -->
+      <section id="mas-sobre-mi" class="reveal mt-6 rounded-2xl border border-black/5 bg-white/95 p-6 shadow-md">
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-terracotta/10 text-terracotta ring-1 ring-black/5">
+              <i data-lucide="info" class="h-5 w-5"></i>
+            </span>
+            <h2 class="text-lg font-extrabold tracking-tight">Más sobre mí</h2>
+          </div>
+
+          <button
+            id="moreToggle"
+            type="button"
+            class="inline-flex items-center gap-2 rounded-2xl border border-black/10 bg-base px-4 py-2 text-sm font-extrabold shadow-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-sunset"
+            aria-controls="morePanel"
+            aria-expanded="false"
+          >
+            Ver detalles
+            <i id="moreChevron" data-lucide="chevron-down" class="h-4 w-4 transition-transform"></i>
+          </button>
+        </div>
+
+        <div
+          id="morePanel"
+          class="mt-4 overflow-hidden rounded-2xl border border-black/10 bg-base"
+          style="max-height:0; transition:max-height 420ms ease;"
+          aria-hidden="true"
+        >
+          <div class="p-5">
+            <div class="grid gap-4 sm:grid-cols-2">
+
+              <!-- INTERESES -->
+              <div class="rounded-2xl border border-black/10 bg-white p-4">
+                <h3 class="text-sm font-extrabold">Intereses</h3>
+
+                <ul class="mt-3 list-disc list-inside space-y-1 text-sm text-ink/75">
+                  <li>Desarrollo de software y soluciones tecnológicas con impacto social.</li>
+                  <li>Automatización de procesos y análisis de datos para mejorar la toma de decisiones.</li>
+                  <li>Explorar aplicaciones prácticas de IA en el desarrollo y análisis de procesos.</li>
+                  <li>Participar en proyectos a lo largo del ciclo de vida del software.</li>
+                  <li>Aprender constantemente nuevas herramientas, tecnologías y metodologías.</li>
+                  <li>Investigar nuevas tendencias tecnológicas y aplicarlas en proyectos reales.</li>
+                </ul>
+              </div>
+
+              <!-- COMO TRABAJO -->
+              <div class="rounded-2xl border border-black/10 bg-white p-4">
+                <h3 class="text-sm font-extrabold">Cómo trabajo</h3>
+
+                <ul class="mt-3 list-disc list-inside space-y-1 text-sm text-ink/75">
+                  <li>Trabajo colaborativo con comunicación clara entre negocio y tecnología.</li>
+                  <li>Experiencia en levantamiento de requisitos y documentación funcional.</li>
+                  <li>Me adapto rápidamente a nuevos entornos, herramientas y retos.</li>
+                  <li>Priorizo el aprendizaje continuo y la mejora iterativa.</li>
+                  <li>Utilizo herramientas de IA para optimizar análisis, procesos y aprendizaje.</li>
+                  <li>Valoro habilidades como proactividad, trabajo en equipo, empatía y resolución de problemas.</li>
+                  <li>Mantengo una mentalidad positiva orientada a resultados y crecimiento constante.</li>
+                </ul>
+              </div>
+
+              <!-- PASATIEMPOS -->
+            <div class="rounded-2xl border border-black/10 bg-white p-4 sm:col-span-2">
+              <h3 class="text-sm font-extrabold">Pasatiempos</h3>
+              <details id="hobbiesAccordion" class="mt-3 rounded-2xl border border-black/10 bg-base px-4 py-3">
+                <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm font-extrabold">
+                  Ver pasatiempos
+                  <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                </summary>
+
+                <div class="mt-4 space-y-3">
+
+                  <!-- MASCOTAS -->
+                  <div class="flex justify-between items-center gap-6 rounded-xl border border-black/10 bg-white p-3 shadow-sm">
+                    <div class="flex-1">
+                      <p class="text-sm font-semibold">Mascotas</p>
+                      <p class="text-xs text-ink/70">
+                        Pasar tiempo con mis mascotas es mi escape favorito. Las pequeñas Negrita y Canelita.
+                      </p>
+                    </div>
+                    <div class="flex space-x-2">
+                      <img src="images/negra.jpg" alt="Negra" class="h-10 w-10 rounded-full object-cover border border-black/20" />
+                      <img src="images/canela.jpg" alt="Canela" class="h-10 w-10 rounded-full object-cover border border-black/20" />
+                    </div>
+                  </div>
+
+                  <!-- FÚTBOL -->
+                  <div class="flex justify-between items-center gap-6 rounded-xl border border-black/10 bg-white p-3 shadow-sm">
+                    <div class="flex-1">
+                      <p class="text-sm font-semibold">Fútbol</p>
+                      <p class="text-xs text-ink/70">
+                        Fanático del deporte rey, no importa el equipo que juege. Hincha de los 2 más grandes.
+                      </p>
+                    </div>
+                    <div class="flex space-x-2">
+                      <img src="images/Universitario.png" alt="Universitario" class="h-10 w-10 object-contain blur transition-all duration-300 hover:blur-0 cursor-pointer" />
+                      <img src="images/Real_Madrid.png" alt="Real Madrid" class="h-10 w-10 object-contain blur transition-all duration-300 hover:blur-0 cursor-pointer" />
+                    </div>
+                  </div>
+
+                  <!-- VIDEOJUEGOS -->
+                  <div
+                    onclick="window.open('https://www.youtube.com/@Amsterdam1891', '_blank')"
+                    class="flex justify-between items-center gap-6 rounded-xl border border-black/10 bg-white p-3 shadow-sm hover:shadow-md transition cursor-pointer"
+                  >
+
+                    <!-- Texto -->
+                    <div class="flex-1">
+                      <p class="text-sm font-semibold">Videojuegos</p>
+                      <p class="text-xs text-gray-700/70">
+                        Paso el rato jugando Left 4 Dead 2, del cual tengo un canal en YT, subo videos cada medio año :)
+                      </p>
+                    </div>
+
+                    <!-- Contenedor del logo y rectángulos -->
+                    <div class="flex items-center ml-4 space-x-2">
+
+                      <!-- Logo principal -->
+                      <img src="images/Left4dead2.webp" alt="Logo Left 4 Dead 2" class="h-13 w-9 object-contain border border-black/20" />
+
+                      <!-- Dos rectángulos apilados -->
+                      <div class="flex flex-col space-y-1">
+                        <a href="https://youtu.be/xcBkmZ9QnK8?si=CW75XkPoTQ8nNe5p" target="_blank" class="block overflow-hidden rounded border border-black/20 transition-transform duration-300 transform hover:scale-105 h-6 w-12">
+                          <img src="images/c1.png" alt="Miniatura Video 1" class="w-full h-full object-cover" />
+                        </a>
+                        <a href="https://youtu.be/qh4sol4i37Q?si=wY_zqtg5OYyLa-wo" target="_blank" class="block overflow-hidden rounded border border-black/20 transition-transform duration-300 transform hover:scale-105 h-6 w-12">
+                          <img src="images/c2.png" alt="Miniatura Video 2" class="w-full h-full object-cover" />
+                        </a>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <!-- Script opcional para evitar que el clic del contenedor afecte a los enlaces internos -->
+                  <script>
+                    document.querySelectorAll('a').forEach(a => {
+                      a.addEventListener('click', function(event){
+                        event.stopPropagation(); // Evita que el clic del contenedor se active
+                      });
+                    });
+                  </script>
+
+                  <!-- APRENDER MÁS -->
+                  <div class="flex justify-between items-center gap-6 rounded-xl border border-black/10 bg-white p-3 shadow-sm">
+                    <div class="flex-1">
+                      <p class="text-sm font-semibold">Aprender y editar</p>
+                      <p class="text-xs text-ink/70">
+                        Dejando un poco de lado el software. Suelo contribuir en Wikipedia, ya sea redactando o editando.
+                      </p>
+                    </div>
+                    <img src="images/wikipedia_logo.png" alt="Wikipedia" class="h-10 w-10 object-contain" />
+                  </div>
+
+                </div>
+              </details>
+            </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <script>
+      const toggle = document.getElementById("moreToggle");
+      const panel = document.getElementById("morePanel");
+      const chevron = document.getElementById("moreChevron");
+
+      toggle.addEventListener("click", () => {
+
+        const open = toggle.getAttribute("aria-expanded") === "true";
+
+        toggle.setAttribute("aria-expanded", !open);
+        panel.setAttribute("aria-hidden", open);
+
+        if (!open) {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+          chevron.style.transform = "rotate(180deg)";
+        } else {
+          panel.style.maxHeight = "0px";
+          chevron.style.transform = "rotate(0deg)";
+        }
+      });
+
+      const hobbies = document.getElementById("hobbiesAccordion");
+
+      hobbies.addEventListener("toggle", () => {
+
+        if (hobbies.open) {
+          setTimeout(()=>{
+            panel.style.maxHeight = panel.scrollHeight + "px";
+          },100);
+        }
+
+      });
+      </script>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-black/10 bg-[#1F2933]">
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <p class="text-sm font-semibold text-[#E5ECF2]">© <span id="year"></span> Emerson. Todos los derechos reservados.</p>
+
+        <div class="flex flex-col gap-4 sm:items-end">
+          <div class="space-y-1 text-sm text-[#E5ECF2]">
+            <p>
+              <span class="font-semibold">Email:</span>
+              <a class="underline hover:text-white" href="mailto:emerson.huaman1@unmsm.edu.pe">emerson.huaman1@unmsm.edu.pe</a>
+            </p>
+            <p>
+              <span class="font-semibold">Teléfono:</span>
+              <a class="underline hover:text-white" href="tel:+51915919608">+51 915 919 608</a>
+            </p>
+            <p>
+              <span class="font-semibold">LinkedIn:</span>
+              <a class="underline hover:text-white" href="https://www.linkedin.com/in/emerson-raul-huaman-ortiz/" target="_blank" rel="noopener">linkedin.com/in/emerson-raul-huaman-ortiz</a>
+            </p>
+            <p>
+              <span class="font-semibold">GitHub:</span>
+              <a class="underline hover:text-white" href="https://github.com/emersonHO" target="_blank" rel="noopener">github.com/emersonHO</a>
+            </p>
+          </div>
+
+          <a
+            href="#inicio"
+            class="inline-flex items-center justify-center gap-2 rounded-2xl bg-white/10 px-4 py-2 text-sm font-bold text-[#E5ECF2] hover:bg-white/20"
+          >
+            <i data-lucide="arrow-up" class="h-4 w-4"></i>
+            Volver arriba
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    /**
+     * Lógica UI (mínima y accesible):
+     * - Menú mobile (navbar)
+     * - Acordeón "Más sobre mí" con transición suave
+     * - Aparición de secciones al hacer scroll
+     * - Año automático en footer
+     * - Inicialización de iconos Lucide
+     */
+
+    // 1) Iconos
+    lucide.createIcons();
+
+    // 2) Año footer
+    document.getElementById("year").textContent = String(new Date().getFullYear());
+
+    // 3) Navbar mobile
+    const navToggle = document.getElementById("navToggle");
+    const navMenu = document.getElementById("navMenu");
+
+    navToggle.addEventListener("click", () => {
+      const isOpen = navToggle.getAttribute("aria-expanded") === "true";
+      navToggle.setAttribute("aria-expanded", String(!isOpen));
+      navMenu.classList.toggle("hidden");
+    });
+
+    // 4) Acordeón "Más sobre mí"
+    const moreToggle = document.getElementById("moreToggle");
+    const morePanel = document.getElementById("morePanel");
+    const moreChevron = document.getElementById("moreChevron");
+
+    function openMore() {
+      moreToggle.setAttribute("aria-expanded", "true");
+      morePanel.setAttribute("aria-hidden", "false");
+      // max-height dinámico para una transición fluida
+      morePanel.style.maxHeight = morePanel.scrollHeight + "px";
+      moreChevron.classList.add("rotate-180");
+    }
+
+    function closeMore() {
+      moreToggle.setAttribute("aria-expanded", "false");
+      morePanel.setAttribute("aria-hidden", "true");
+      morePanel.style.maxHeight = "0px";
+      moreChevron.classList.remove("rotate-180");
+    }
+
+    let moreOpen = false;
+    moreToggle.addEventListener("click", () => {
+      moreOpen = !moreOpen;
+      if (moreOpen) openMore();
+      else closeMore();
+    });
+
+    // Si el viewport cambia (rotación / resize), mantenemos la altura correcta si está abierto.
+    window.addEventListener("resize", () => {
+      if (!moreOpen) return;
+      morePanel.style.maxHeight = morePanel.scrollHeight + "px";
+    });
+
+    // 5) Aparición suave de tarjetas/sections al hacer scroll (IntersectionObserver)
+    const revealElements = document.querySelectorAll(".reveal");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("reveal--visible");
+            // Una vez visible, no se vuelve a esconder
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.15,
+      }
+    );
+
+    revealElements.forEach((el) => observer.observe(el));
+  </script>
+</body>
+</html>
